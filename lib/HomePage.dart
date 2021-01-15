@@ -65,6 +65,45 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Scratch & Win'),
+      ),
+
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.start,
+
+        children:<Widget>[
+          Expanded(
+            child: GridView.builder(
+              padding: EdgeInsets.all(20.0),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 5,
+                childAspectRatio: 1.0,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+              ),
+
+              itemCount: tokens.length,
+              itemBuilder: (context, i) => SizedBox(
+                width: 50.0,
+                height: 50.0,
+
+                child: RaisedButton(
+                  onPressed: (){
+                    checkYourDestiny(i),
+                  },
+                  child: Image(
+                    image: this.getImage(i),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+
+    );
   }
 }

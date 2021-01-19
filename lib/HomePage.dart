@@ -18,13 +18,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    tokens = List<String>.generate(25, (index) => "empty");
+    this.tokens = List<String>.generate(25, (index) => "empty");
+    this.generateNumber();
   }
 
   generateNumber() {
     int randomNumber = Random().nextInt(tokens.length);
     setState(() {
-      luckyNumber = randomNumber;
+      this.luckyNumber = randomNumber;
     });
   }
 
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  getImage(int index) {
+  AssetImage getImage(int index) {
     String checkState = tokens[index];
     if (checkState == "lucky")
       return lucky;
@@ -54,11 +55,12 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       tokens = List<String>.filled(tokens.length, "empty");
     });
+    generateNumber();
   }
 
   showAll() {
     setState(() {
-      tokens = List<String>.filled(25, "unlucky");
+      tokens = List<String>.filled(tokens.length, "unlucky");
       tokens[luckyNumber] = "lucky";
     });
   }
@@ -69,12 +71,10 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Scratch & Win'),
       ),
-
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
-
-        children:<Widget>[
+        children: <Widget>[
           Expanded(
             child: GridView.builder(
               padding: EdgeInsets.all(20.0),
@@ -84,15 +84,13 @@ class _HomePageState extends State<HomePage> {
                 crossAxisSpacing: 10.0,
                 mainAxisSpacing: 10.0,
               ),
-
               itemCount: tokens.length,
               itemBuilder: (context, i) => SizedBox(
                 width: 50.0,
                 height: 50.0,
-
                 child: RaisedButton(
-                  onPressed: (){
-                    checkYourDestiny(i),
+                  onPressed: () {
+                    this.checkYourDestiny(i);
                   },
                   child: Image(
                     image: this.getImage(i),
@@ -100,10 +98,31 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-          )
+          ),
+          Container(
+            margin: EdgeInsets.all(15.0),
+            child: RaisedButton(
+              onPressed: this.resetGame(),
+              child: Text(
+                'Reset',
+              ),
+              color: Colors.blue,
+              padding: EdgeInsets.all(20.0),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(15.0),
+            child: RaisedButton(
+              onPressed: this.showAll(),
+              child: Text(
+                'Show All',
+              ),
+              color: Colors.blue,
+              padding: EdgeInsets.all(20.0),
+            ),
+          ),
         ],
       ),
-
     );
   }
 }
